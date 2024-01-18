@@ -70,7 +70,7 @@ router.post(
 
     const { email, password } = req.body;
     try {
-      let user = await User.findOne({email});
+      let user = await User.findOne({ email });
       if (!user) {
         return res
           .status(400)
@@ -98,16 +98,18 @@ router.post(
 
 //Route 3 :get logged  user detail using POST : (/api/auth/getuser) . require Login
 router.post(
-  "/getuser", fetchuser,
-  
+  "/getuser",
+  fetchuser,
+
   async (req, res) => {
     try {
-      const userId = req.user.id
+      const userId = req.user.id;
       const user = await User.findById(userId).select("-password");
       res.send(user);
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
     }
-  })
+  }
+);
 module.exports = router;
