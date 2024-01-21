@@ -57,29 +57,60 @@ router.post(
 
 router.put("/updatenote/:id", fetchuser, async (req, res) => {
   const { title, description, tag } = req.body;
-  //Create  a newNote object
 
-  const newNote = {};
-  if (title) {
-    newNote.title = title;
-  }
-  if (description) {
-    newNote.description = description;
-  }
-  if (tag) {
-    newNote.tag = tag;
-  }
+  try {
+    //Create  a newNote object
 
-  let note = await Note.findById(req.params.id);
-  if (!note) {
-    return req.status(404).send("Not Found");
-  }
+    const newNote = {};
+    if (title) {
+      newNote.title = title;
+    }
+    if (description) {
+      newNote.description = description;
+    }
+    if (tag) {
+      newNote.tag = tag;
+    }
 
-  if (note.user.toString() !== req.user.id) {
-    return req.status(401).send("Not Authorized");
-  }
+    let note = await Note.findById(req.params.id);
+    if (!note) {
+      return req.status(404).send("Not Found");
+    }
 
-  note = await Note.findByIdAndUpdate(req.params.id , {$set: newNote}, {new:true})
-  res.json({note});
+    if (note.user.toString() !== req.user.id) {
+      return req.status(401).send("Not Authorized");
+    }
+
+    note = await Note.findByIdAndUpdate(
+      req.params.id,
+      { $set: newNote },
+      { new: true }
+    );
+    res.json({ note });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// ROUTE 3 : Delete existing notes Delete : (/api/deletenote)  require auth
+
+router.delete("/deletenote/:id", fetchuser, async (req, res) => {
+  try {
+    let note = await Note.findById(req.params.id);
+    if (!note) {
+      return req.status(404).send("Not Found");
+    }
+
+    if (note.user.toString() !== req.user.id) {
+      return req.status(401).send("Not Authorized");
+    }
+
+    note = await Note.findByIdAndDelete(req.params.id);
+    res.json({ Success: "Note Has Been Deleted", note: note });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
 });
 module.exports = router;
