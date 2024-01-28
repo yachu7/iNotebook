@@ -74,11 +74,11 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 
     let note = await Note.findById(req.params.id);
     if (!note) {
-      return req.status(404).send("Not Found");
+      return res.status(404).send("Not Found");
     }
 
     if (note.user.toString() !== req.user.id) {
-      return req.status(401).send("Not Authorized");
+      return res.status(401).send("Not Authorized");
     }
 
     note = await Note.findByIdAndUpdate(
@@ -99,11 +99,11 @@ router.delete("/deletenote/:id", fetchuser, async (req, res) => {
   try {
     let note = await Note.findById(req.params.id);
     if (!note) {
-      return req.status(404).send("Not Found");
+      return res.status(404).send("Not Found");
     }
 
     if (note.user.toString() !== req.user.id) {
-      return req.status(401).send("Not Authorized");
+      return res.status(401).send("Not Authorized");
     }
 
     note = await Note.findByIdAndDelete(req.params.id);

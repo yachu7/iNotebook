@@ -17,15 +17,12 @@ const NoteState = (props) => {
         "auth-token":
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVhNjQ4NDVmZjRkZWI1OTRjZjgyY2IyIn0sImlhdCI6MTcwNTUxMDg0NX0.qQtqqeU0pQBhYA6GG7K9jxB6f85dcKebm9UUhINENYY",
       },
-
-      
     });
 
     //Getiing Note
-const json = await response.json()
-    console.log(json)
+    const json = await response.json();
+    console.log(json);
     setNote(json);
-   
   };
 
   //Add note
@@ -40,8 +37,10 @@ const json = await response.json()
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVhNjQ4NDVmZjRkZWI1OTRjZjgyY2IyIn0sImlhdCI6MTcwNTUxMDg0NX0.qQtqqeU0pQBhYA6GG7K9jxB6f85dcKebm9UUhINENYY",
       },
 
-      body: JSON.stringify({title, description, tag}), // body data type must match "Content-Type" header
+      body: JSON.stringify({ title, description, tag }), // body data type must match "Content-Type" header
     });
+    const json = await response.json();
+    console.log(json)
 
     //Adding Note
     console.log("Adding a New Note");
@@ -60,16 +59,17 @@ const json = await response.json()
   const deleteNote = async (id) => {
     //API Call
 
-    // const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
-    //   method: "POST", // *GET, POST, PUT, DELETE, etc.
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+      method: "DELETE", // *GET, POST, PUT, DELETE, etc.
 
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "auth-token":
-    //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVhNjQ4NDVmZjRkZWI1OTRjZjgyY2IyIn0sImlhdCI6MTcwNTUxMDg0NX0.qQtqqeU0pQBhYA6GG7K9jxB6f85dcKebm9UUhINENYY",
-    //   },
-    // });
-    // const json = response.json(); // parses JSON response into native JavaScript objects
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVhNjQ4NDVmZjRkZWI1OTRjZjgyY2IyIn0sImlhdCI6MTcwNTUxMDg0NX0.qQtqqeU0pQBhYA6GG7K9jxB6f85dcKebm9UUhINENYY",
+      },
+    });
+    const json = await response.json(); // parses JSON response into native JavaScript objects
+    console.log(json);
 
     // Deleting Note
     const newNote = note.filter((notes) => {
@@ -82,8 +82,8 @@ const json = await response.json()
   const editNote = async (id, title, description, tag) => {
     //API Call
 
-    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+    const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
 
       headers: {
         "Content-Type": "application/json",
@@ -91,22 +91,30 @@ const json = await response.json()
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVhNjQ4NDVmZjRkZWI1OTRjZjgyY2IyIn0sImlhdCI6MTcwNTUxMDg0NX0.qQtqqeU0pQBhYA6GG7K9jxB6f85dcKebm9UUhINENYY",
       },
 
-      body: JSON.stringify({title,description,tag}), // body data type must match "Content-Type" header
+      body: JSON.stringify({ title, description, tag }), // body data type must match "Content-Type" header
     });
     const json = response.json(); // parses JSON response into native JavaScript objects
+    console.log(json)
 
+
+    let newNote = JSON.parse(JSON.stringify(note))
     //Editing Note
-    for (let index = 0; index < note.length; index++) {
-      const element = note[index];
-      if (element._id == id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+    for (let index = 0; index < newNote.length; index++) {
+      const element = newNote[index];
+      if (element._id === id) {
+        newNote[index].title = title;
+        newNote[index].description = description;
+        newNote[index].tag = tag;
+        break;
       }
+
     }
+    setNote(newNote);
   };
   return (
-    <NoteContext.Provider value={{ note, addNote, deleteNote, editNote,getNote }}>
+    <NoteContext.Provider
+      value={{ note, addNote, deleteNote, editNote, getNote }}
+    >
       {props.children}
     </NoteContext.Provider>
   );
