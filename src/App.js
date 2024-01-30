@@ -6,6 +6,8 @@ import About from "./componenets/About";
 import Navbar from "./componenets/Navbar";
 import NoteState from "./context/notes/NoteState";
 import Alert from "./componenets/Alert";
+import Login from "./componenets/Login";
+import Signup from "./componenets/Signup";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -27,6 +29,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/login" element={<Login/>} />
+              <Route path="/signup" element={<Signup/>} />
             </Routes>
           </div>
         </Router>

@@ -37,17 +37,8 @@ function Navbar() {
               </NavLink>
             </li>
           </ul>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
+          <NavLink className="btn btn-primary mx-1" to="/login" role="button">Login</NavLink>
+          <NavLink className="btn btn-primary mx-1" to="/signup" role="button">SignUp</NavLink>
         </div>
       </div>
     </nav>
