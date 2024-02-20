@@ -1,7 +1,12 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Navbar() {
+  let history = useNavigate();
+const handleLogout = () =>{
+  localStorage.removeItem('token');
+  history("/login");
+}
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary"
     style={{ boxShadow: "0 2px 4px 0 rgba(0,0,0,.2)" }}>
@@ -37,8 +42,9 @@ function Navbar() {
               </NavLink>
             </li>
           </ul>
+          {!localStorage.getItem('token')?<form className="d-flex">
           <NavLink className="btn btn-primary mx-1" to="/login" role="button">Login</NavLink>
-          <NavLink className="btn btn-primary mx-1" to="/signup" role="button">SignUp</NavLink>
+          <NavLink className="btn btn-primary mx-1" to="/signup" role="button">SignUp</NavLink></form>: <button onClick={handleLogout} className="btn btn-primary">Logout</button> }
         </div>
       </div>
     </nav>
